@@ -1,0 +1,26 @@
+*---------------------------------------------------------------------*
+*    view related data declarations
+*   generation date: 30.08.2019 at 09:50:00
+*   view maintenance generator version: #001407#
+*---------------------------------------------------------------------*
+*...processing: ZZ_1213_PARTNER.................................*
+TABLES: ZZ_1213_PARTNER, *ZZ_1213_PARTNER. "view work areas
+CONTROLS: TCTRL_ZZ_1213_PARTNER
+TYPE TABLEVIEW USING SCREEN '0100'.
+DATA: BEGIN OF STATUS_ZZ_1213_PARTNER. "state vector
+          INCLUDE STRUCTURE VIMSTATUS.
+DATA: END OF STATUS_ZZ_1213_PARTNER.
+* Table for entries selected to show on screen
+DATA: BEGIN OF ZZ_1213_PARTNER_EXTRACT OCCURS 0010.
+INCLUDE STRUCTURE ZZ_1213_PARTNER.
+          INCLUDE STRUCTURE VIMFLAGTAB.
+DATA: END OF ZZ_1213_PARTNER_EXTRACT.
+* Table for all entries loaded from database
+DATA: BEGIN OF ZZ_1213_PARTNER_TOTAL OCCURS 0010.
+INCLUDE STRUCTURE ZZ_1213_PARTNER.
+          INCLUDE STRUCTURE VIMFLAGTAB.
+DATA: END OF ZZ_1213_PARTNER_TOTAL.
+
+*.........table declarations:.................................*
+TABLES: SBUSPART                       .
+TABLES: STRAVELAG                      .

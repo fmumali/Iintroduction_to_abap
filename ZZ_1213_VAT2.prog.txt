@@ -1,0 +1,28 @@
+*&---------------------------------------------------------------------*
+*& Report ZZ_1213_VAT
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZZ_1213_VAT2.
+
+PARAMETERS net TYPE P DECIMALS 2.
+PARAMETERS vat TYPE p DECIMALS 0.
+DATA total TYPE p DECIMALS 2.
+PERFORM calculation(zz_1213_vat2)
+  USING net vat
+  CHANGING total.
+
+WRITE: / 'NET:', net.
+WRITE: / 'VAT:', vat.
+WRITE: / 'TOTAL:', total.
+
+
+FORM calculation
+     USING
+           value(net) TYPE p
+           value(vat) TYPE p
+     CHANGING
+           value(total) TYPE p.
+
+total = net * ( 1 + vat / 100 ).
+ENDFORM.

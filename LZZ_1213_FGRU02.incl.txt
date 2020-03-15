@@ -1,0 +1,30 @@
+FUNCTION Z_1213_GET_FLIGHTS .
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(IM_CARRID) TYPE  S_CARR_ID
+*"  EXPORTING
+*"     REFERENCE(EX_LIST) TYPE  ZZ_1213_FLIST
+*"  EXCEPTIONS
+*"      SQL_ERROR
+*"      NO_AUTH
+*"----------------------------------------------------------------------
+
+
+SELECT *
+FROM SPFLI INTO CORRESPONDING FIELDS OF TABLE EX_LIST
+WHERE carrid = IM_CARRID.
+
+IF
+sy-subrc <> 0.
+RAISE SQL_ERROR.
+ENDIF.
+
+ AUTHORITY-CHECK OBJECT 'S_CARRID'
+  ID 'CARRID' FIELD IM_CARRID
+  ID 'ACTVT' FIELD '03'.
+IF sy-subrc <> 0.
+    RAISE NO_AUTH.
+ENDIF.
+
+ENDFUNCTION.

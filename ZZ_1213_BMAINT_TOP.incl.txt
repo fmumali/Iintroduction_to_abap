@@ -1,0 +1,13 @@
+*&---------------------------------------------------------------------*
+*& Include ZZ_1213_BMAINT_TOP                       - Module Pool      ZZ_1213_BMAINT
+*&---------------------------------------------------------------------*
+PROGRAM ZZ_1213_BMAINT  MESSAGE-ID ZZ_1213_EMESSAGES.
+
+TABLES ZZ1213_BROCH.
+TABLES ZZ1213_OFFER.
+TABLES SPFLI.
+DATA wa_broch TYPE ZZ1213_BROCH.
+DATA wa_offer TYPE ZZ1213_OFFER.
+DATA wa_flight1 TYPE SPFLI.
+DATA wa_flight2 TYPE SPFLI.
+DATA ok_code LIKE sy-ucomm.

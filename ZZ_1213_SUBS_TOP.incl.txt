@@ -1,0 +1,11 @@
+*&---------------------------------------------------------------------*
+*& Include ZZ_1213_SUBS_TOP                         - Module Pool      ZZ_1213_SUBS
+*&---------------------------------------------------------------------*
+PROGRAM ZZ_1213_SUBS.
+
+TABLES SCUSTOM.
+
+DATA: wa TYPE SCUSTOM,
+      ok_code LIKE sy-ucomm,
+      snum LIKE sy-dynnr.
+CONTROLS my_tab_strip TYPE TABSTRIP.

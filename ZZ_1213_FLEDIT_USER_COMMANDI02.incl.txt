@@ -1,0 +1,86 @@
+*----------------------------------------------------------------------*
+***INCLUDE ZZ_1213_FLEDIT_USER_COMMANDI02.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0200  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0200 INPUT.
+
+CASE ok_code.
+
+   WHEN 'BACK'.
+CALL FUNCTION 'DEQUEUE_EZ_SPFLI'
+ EXPORTING
+   MODE_SPFLI       = 'S'
+   MANDT            = SY-MANDT
+   CARRID           = SPFLI-CARRID
+   CONNID           = SPFLI-CONNID
+   X_CARRID         = ' '
+   X_CONNID         = ' '
+*   _SCOPE           = '3'
+*   _SYNCHRON        = ' '
+*   _COLLECT         = ' '
+          .
+
+
+   WHEN 'LEAVE'.
+       LEAVE PROGRAM.
+   WHEN 'SAVE'.
+    IF spfli <> wa_conn.
+CALL FUNCTION 'ENQUEUE_EZ_SPFLI'
+ EXPORTING
+   MODE_SPFLI           = 'E'
+   MANDT                = SY-MANDT
+   CARRID               = SPFLI-CARRID
+   CONNID               = SPFLI-CONNID
+   X_CARRID             = ' '
+   X_CONNID             = ' '
+*   _SCOPE               = '2'
+*   _WAIT                = ' '
+*   _COLLECT             = ' '
+ EXCEPTIONS
+   FOREIGN_LOCK         = 1
+   SYSTEM_FAILURE       = 2
+   OTHERS               = 3
+          .
+IF sy-subrc <> 0.
+* Implement suitable error handling here
+MESSAGE 'Error occured while setting the write lock, try again!' TYPE 'E'.
+ENDIF.
+
+    MODIFY spfli FROM spfli.
+
+CALL FUNCTION 'DEQUEUE_EZ_SPFLI'
+ EXPORTING
+   MODE_SPFLI       = 'E'
+   MANDT            = SY-MANDT
+   CARRID           = SPFLI-CARRID
+   CONNID           = SPFLI-CONNID
+   X_CARRID         = ' '
+   X_CONNID         = ' '
+*   _SCOPE           = '3'
+*   _SYNCHRON        = ' '
+*   _COLLECT         = ' '
+          .
+
+    ENDIF.
+
+CALL FUNCTION 'DEQUEUE_EZ_SPFLI'
+ EXPORTING
+   MODE_SPFLI       = 'S'
+   MANDT            = SY-MANDT
+   CARRID           = SPFLI-CARRID
+   CONNID           = SPFLI-CONNID
+   X_CARRID         = ' '
+   X_CONNID         = ' '
+*   _SCOPE           = '3'
+*   _SYNCHRON        = ' '
+*   _COLLECT         = ' '
+          .
+
+ENDCASE.
+
+
+ENDMODULE.

@@ -1,0 +1,22 @@
+*----------------------------------------------------------------------*
+***INCLUDE ZZ_1213_SUBS_USER_COMMAND_0I01.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0100  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+
+MODULE user_command_0100 INPUT.
+
+CASE ok_code.
+    WHEN 'FC1' OR 'FC2'.
+           my_tab_strip-activetab = ok_code.
+    WHEN 'DSP'.
+        SELECT SINGLE * FROM scustom INTO wa WHERE id = scustom-id.
+    WHEN 'BACK'.
+        LEAVE PROGRAM.
+ENDCASE.
+
+
+ENDMODULE.

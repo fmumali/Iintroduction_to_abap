@@ -1,0 +1,61 @@
+*----------------------------------------------------------------------*
+***INCLUDE ZZ_1213_FLEDIT_USER_COMMANDI01.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0100  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0100 INPUT.
+CASE ok_code.
+    WHEN 'SELECT'.
+
+ CALL FUNCTION 'ENQUEUE_EZ_SPFLI'
+      EXPORTING
+      MODE_SPFLI           = 'S'
+      MANDT                = SY-MANDT
+      CARRID               = spfli-carrid
+      CONNID               = spfli-connid
+      X_CARRID             = ' '
+      X_CONNID             = ' '
+*     _SCOPE               = '2'
+*     _WAIT                = ' '
+*     _COLLECT             = ' '
+      EXCEPTIONS
+      FOREIGN_LOCK         = 1
+      SYSTEM_FAILURE       = 2
+      OTHERS               = 3
+                                .
+   IF sy-subrc <> 0.
+*    Implement suitable error handling here
+    MESSAGE 'Lock could not be set.' TYPE 'E'.
+    ENDIF.
+
+         SELECT SINGLE * FROM SPFLI INTO wa_conn
+         WHERE carrid = spfli-carrid AND connid = spfli-connid.
+
+IF SY-SUBRC <> 0.
+
+CALL FUNCTION 'DEQUEUE_EZ_SPFLI'
+ EXPORTING
+   MODE_SPFLI       = 'S'
+   MANDT            = SY-MANDT
+   CARRID           = SPFLI-CARRID
+   CONNID           = SPFLI-CONNID
+   X_CARRID         = ' '
+   X_CONNID         = ' '
+*   _SCOPE           = '3'
+*   _SYNCHRON        = ' '
+*   _COLLECT         = ' '
+          .
+    MESSAGE e002 WITH spfli-carrid spfli-connid.
+    ELSE.
+    MESSAGE s001 WITH spfli-carrid spfli-connid.
+    ENDIF.
+
+    WHEN 'BACK'.
+    LEAVE PROGRAM.
+ENDCASE.
+CLEAR ok_code.
+
+ENDMODULE.

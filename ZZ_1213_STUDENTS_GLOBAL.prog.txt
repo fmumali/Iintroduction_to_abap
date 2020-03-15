@@ -1,0 +1,74 @@
+*&---------------------------------------------------------------------*
+*& Report ZZ_1213_STUDENTS_GLOBAL
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZZ_1213_STUDENTS_GLOBAL.
+
+PARAMETERS pa_gpa TYPE ZZ_1213_ST_GPA.
+
+DATA:
+ BEGIN OF ZZ1213_STUD,
+        NAME,
+        FIRSTNAME,
+        MATR,
+        AGE,
+        FIELD,
+        GPA,
+END OF ZZ1213_STUD.
+
+DATA: ZZ_1213_STUD_TAB TYPE SORTED TABLE OF ZZ1213_STUD WITH UNIQUE KEY MATR,
+
+ my_stud TYPE  ZZ1213_STUD.
+
+    my_stud-NAME = 'Michal'.
+    my_stud-FIRSTNAME = 'Allen'.
+    my_stud-MATR = '334450'.
+    my_stud-AGE = '26'.
+    my_stud-FIELD = 'Forensic Science'.
+    my_stud-GPA =  pa_gpa.
+INSERT my_stud INTO TABLE ZZ_1213_STUD_TAB.
+
+    my_stud-NAME = 'Nora'.
+    my_stud-FIRSTNAME = 'West'.
+    my_stud-MATR = '334460'.
+    my_stud-AGE =  '24'.
+    my_stud-FIELD = 'Mass Communication'.
+    my_stud-GPA =   pa_gpa.
+INSERT my_stud INTO TABLE ZZ_1213_STUD_TAB.
+
+    my_stud-NAME = 'Caitlyn'.
+    my_stud-FIRSTNAME = 'Snow'.
+    my_stud-MATR = '334470'.
+    my_stud-AGE = '25'.
+    my_stud-FIELD = 'Biotechnology'.
+    my_stud-GPA =  pa_gpa.
+INSERT my_stud INTO TABLE ZZ_1213_STUD_TAB.
+
+    my_stud-NAME = 'Cisco'.
+    my_stud-FIRSTNAME = 'Ramon'.
+    my_stud-MATR = '334480'.
+    my_stud-AGE =  '28'.
+    my_stud-FIELD = 'Mechanical Engineering'.
+    my_stud-GPA =  pa_gpa.
+INSERT my_stud INTO TABLE ZZ_1213_STUD_TAB.
+
+    my_stud-NAME = 'Harrison'.
+    my_stud-FIRSTNAME = 'Wells'.
+    my_stud-MATR = '334490'.
+    my_stud-AGE =  '33'.
+    my_stud-FIELD = 'Particle Physics'.
+    my_stud-GPA =  pa_gpa.
+INSERT my_stud INTO TABLE ZZ_1213_STUD_TAB.
+
+LOOP AT ZZ_1213_STUD_TAB INTO my_stud.
+
+    WRITE: /.
+    WRITE: / 'Last Name:', my_stud-NAME.
+    WRITE: / 'First Name:', my_stud-FIRSTNAME.
+    WRITE: / 'Matriculation Number:',my_stud-MATR.
+    WRITE: / 'Age:', my_stud-AGE.
+    WRITE: / 'Field of Studies:', my_stud-FIELD.
+    WRITE: / 'Current GPA:', my_stud-GPA.
+
+ENDLOOP.

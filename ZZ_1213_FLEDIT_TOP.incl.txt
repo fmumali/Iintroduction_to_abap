@@ -1,0 +1,10 @@
+*&---------------------------------------------------------------------*
+*& Include ZZ_1213_FLEDIT_TOP                       - Module Pool      ZZ_1213_FLEDIT
+*&---------------------------------------------------------------------*
+PROGRAM ZZ_1213_FLEDIT  MESSAGE-ID ZZ_1213_EMESSAGES.
+
+TABLES  spfli.
+
+DATA wa_conn TYPE spfli.
+
+DATA ok_code LIKE sy-ucomm.

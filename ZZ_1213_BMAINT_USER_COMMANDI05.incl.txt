@@ -1,0 +1,29 @@
+*----------------------------------------------------------------------*
+***INCLUDE ZZ_1213_BMAINT_USER_COMMANDI05.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0305  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0305 INPUT.
+
+CASE ok_code.
+
+WHEN 'SAVE'.
+
+    IF ZZ1213_BROCH <> wa_broch.
+       MODIFY  ZZ1213_BROCH FROM  ZZ1213_BROCH.
+
+       IF sy-subrc = 0.
+         MESSAGE 'Brochure successully saved' TYPE 'S'.
+       ENDIF.
+    ENDIF.
+    LEAVE TO SCREEN 200.
+
+WHEN 'BACK'.
+LEAVE TO SCREEN 304.
+
+ENDCASE.
+
+ENDMODULE.

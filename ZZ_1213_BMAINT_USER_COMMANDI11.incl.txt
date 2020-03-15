@@ -1,0 +1,43 @@
+*----------------------------------------------------------------------*
+***INCLUDE ZZ_1213_BMAINT_USER_COMMANDI11.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0200  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0200 INPUT.
+
+  CASE ok_code.
+
+    WHEN 'VIEWB'.
+      LEAVE TO SCREEN 300.
+    WHEN 'EDITB'.
+      LEAVE TO SCREEN 304.
+    WHEN 'CRTB'.
+      LEAVE TO SCREEN 302.
+    WHEN 'DELB'.
+      LEAVE TO SCREEN 304.
+    WHEN 'VIEWO'.
+      LEAVE TO SCREEN 400.
+    WHEN 'EDITO'.
+      LEAVE TO SCREEN 404.
+    WHEN 'CRTO'.
+      LEAVE TO SCREEN 402.
+    WHEN 'DELO'.
+      LEAVE TO SCREEN 404.
+    WHEN 'BACK'.
+      LEAVE PROGRAM.
+    WHEN 'CANCEL'.
+      LEAVE PROGRAM.
+    WHEN 'EXIT'.
+      LEAVE PROGRAM.
+
+   ENDCASE.
+
+
+
+
+   CLEAR ok_code.
+
+ENDMODULE.

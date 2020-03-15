@@ -1,0 +1,28 @@
+*&---------------------------------------------------------------------*
+*& Module Pool      ZZ_1213_FLEDIT
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE ZZ_1213_FLEDIT_TOP                      .    " Global Data
+
+* INCLUDE ZZ_1213_FLEDIT_O01                      .  " PBO-Modules
+* INCLUDE ZZ_1213_FLEDIT_I01                      .  " PAI-Modules
+* INCLUDE ZZ_1213_FLEDIT_F01                      .  " FORM-Routines
+
+
+INCLUDE zz_1213_fledit_value_requesi01.
+
+INCLUDE zz_1213_fledit_status_0100o01.
+
+INCLUDE zz_1213_fledit_user_commandi01.
+
+INCLUDE zz_1213_fledit_status_0200o01.
+
+INCLUDE zz_1213_fledit_user_commandi02.
+
+"INCLUDE zz_1213_fledit_check_inputi01.
+
+ "INCLUDE zz_1213_fledit_exiti01.
+
+INCLUDE zz_1213_fledit_exit_screeni01.

@@ -1,0 +1,38 @@
+*&---------------------------------------------------------------------*
+*& Report ZZ_1213_NRTEST
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZZ_1213_NRTEST.
+
+DATA number TYPE i.
+
+CALL FUNCTION 'NUMBER_GET_NEXT'
+  EXPORTING
+    nr_range_nr                   = '1'
+    object                        = 'ZZ_1213_NR'
+*   QUANTITY                      = '1'
+*   SUBOBJECT                     = ' '
+*   TOYEAR                        = '0000'
+*   IGNORE_BUFFER                 = ' '
+ IMPORTING
+   NUMBER                        = number
+*   QUANTITY                      =
+*   RETURNCODE                    =
+* EXCEPTIONS
+*   INTERVAL_NOT_FOUND            = 1
+*   NUMBER_RANGE_NOT_INTERN       = 2
+*   OBJECT_NOT_FOUND              = 3
+*   QUANTITY_IS_0                 = 4
+*   QUANTITY_IS_NOT_1             = 5
+*   INTERVAL_OVERFLOW             = 6
+*   BUFFER_OVERFLOW               = 7
+*   OTHERS                        = 8
+          .
+IF sy-subrc <> 0.
+* Implement suitable error handling here
+
+ENDIF.
+
+
+WRITE: / 'Number', number, 'Was the result'.

@@ -1,0 +1,126 @@
+*&---------------------------------------------------------------------*
+*& Report ZZ_1213_OBJECTS
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Class VEHICLE
+*&---------------------------------------------------------------------*
+*& A Class for Vehicles
+*&---------------------------------------------------------------------*
+REPORT ZZ_1213_OBJECTS.
+
+INCLUDE ZZ_1213_CLASS_INCL.
+
+DATA: idealvehicle TYPE REF TO vehicle,
+      my_water_vehicle TYPE REF TO water_vehicle,
+      my_land_vehicle TYPE REF TO land_vehicle,
+      vehicles TYPE TABLE OF REF TO vehicle.
+
+ START-OF-SELECTION.
+
+   " CREATE OBJECT  idealvehicle.
+   " idealvehicle->set_attribute_values(
+  " EXPORTING im_name = 'BMW X7'
+      "        im_seats = 6
+       "       im_topspeed = 130 ).
+
+   " idealvehicle->print( ).
+
+
+CREATE OBJECT my_land_vehicle.
+my_land_vehicle->set_attribute_values(
+EXPORTING im_name = 'Audi A8'
+          im_seats = 5
+          im_topspeed = 250 ).
+my_land_vehicle->set_wheels( 4 ).
+APPEND my_land_vehicle TO vehicles.
+
+CREATE OBJECT my_land_vehicle.
+my_land_vehicle->set_attribute_values(
+EXPORTING im_name = 'Mercedes S-Class'
+          im_seats = 5
+          im_topspeed = 196 ).
+my_land_vehicle->set_wheels( 4 ).
+APPEND my_land_vehicle TO vehicles.
+
+CREATE OBJECT my_land_vehicle.
+my_land_vehicle->set_attribute_values(
+EXPORTING im_name = 'Jaguar XF'
+          im_seats = 5
+          im_topspeed = 250 ).
+my_land_vehicle->set_wheels( 4 ).
+APPEND my_land_vehicle TO vehicles.
+
+CREATE OBJECT my_land_vehicle.
+my_land_vehicle->set_attribute_values(
+EXPORTING im_name = 'Volvo S90'
+          im_seats = 5
+          im_topspeed = 140 ).
+my_land_vehicle->set_wheels( 4 ).
+APPEND my_land_vehicle TO vehicles.
+
+CREATE OBJECT my_land_vehicle.
+my_land_vehicle->set_attribute_values(
+EXPORTING im_name = 'Mercedes Benz E-Class'
+          im_seats = 5
+          im_topspeed = 250 ).
+my_land_vehicle->set_wheels( 4 ).
+APPEND my_land_vehicle TO vehicles.
+
+CREATE OBJECT my_water_vehicle.
+my_water_vehicle->set_attribute_values(
+EXPORTING im_name = 'Cruise Ship'
+          im_seats = 800
+          im_topspeed = 35 ).
+my_water_vehicle->set_depth( 4 ).
+APPEND my_water_vehicle TO vehicles.
+
+CREATE OBJECT my_water_vehicle.
+my_water_vehicle->set_attribute_values(
+EXPORTING im_name = 'Cruise Ship'
+          im_seats = 800
+          im_topspeed = 35 ).
+my_water_vehicle->set_depth( 40 ).
+APPEND my_water_vehicle TO vehicles.
+
+CREATE OBJECT my_water_vehicle.
+my_water_vehicle->set_attribute_values(
+EXPORTING im_name = 'Ferry'
+          im_seats = 1000
+          im_topspeed = 29 ).
+my_water_vehicle->set_depth( 44 ).
+APPEND my_water_vehicle TO vehicles.
+
+CREATE OBJECT my_water_vehicle.
+my_water_vehicle->set_attribute_values(
+EXPORTING im_name = 'Frigate'
+          im_seats = 100
+          im_topspeed = 14 ).
+my_water_vehicle->set_depth( 84 ).
+APPEND my_water_vehicle TO vehicles.
+
+CREATE OBJECT my_water_vehicle.
+my_water_vehicle->set_attribute_values(
+EXPORTING im_name = 'Tanker'
+          im_seats = 200
+          im_topspeed = 19 ).
+my_water_vehicle->set_depth( 80 ).
+APPEND my_water_vehicle TO vehicles.
+
+
+
+LOOP AT vehicles INTO idealvehicle.
+  idealvehicle->print( ).
+  WRITE /.
+  ENDLOOP.
+
+
+  CREATE OBJECT idealvehicle TYPE water_vehicle.
+   idealvehicle->set_attribute_values(
+   EXPORTING im_name = 'Gaza Flotila'
+             im_seats = 300
+             im_topspeed = 20 ).
+   my_water_vehicle ?= idealvehicle.
+   my_water_vehicle->set_depth( 10 ).
+   idealvehicle->print( ).

@@ -1,0 +1,96 @@
+*&---------------------------------------------------------------------*
+*& Include          ZZ_1213_CLASS_INCL
+*&---------------------------------------------------------------------*
+
+CLASS vehicle DEFINITION ABSTRACT.
+  PUBLIC SECTION.
+  METHODS: set_attribute_values
+  IMPORTING
+    im_name TYPE c
+    im_seats TYPE i
+    im_topspeed TYPE i.
+ METHODS: print
+ "IMPORTING
+ EXPORTING
+   im_name TYPE c
+   im_seats TYPE i
+   im_topspeed TYPE i.
+
+  PRIVATE SECTION.
+  DATA:
+        name TYPE  c LENGTH 30,
+        seats TYPE i,
+        topspeed TYPE i.
+
+ ENDCLASS.
+*&---------------------------------------------------------------------*
+*& Class (Implementation) VEHICLE
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS vehicle IMPLEMENTATION.
+
+  METHOD set_attribute_values.
+    name = im_name.
+    seats = im_seats.
+    topspeed = im_topspeed.
+  ENDMETHOD.
+
+ METHOD print.
+   WRITE: /'Name:', 35 name.
+   WRITE: /'Seats:', 35 seats.
+   WRITE: /'Topspeed:', 35 topspeed.
+ ENDMETHOD.
+ENDCLASS.
+
+CLASS water_vehicle DEFINITION INHERITING FROM vehicle.
+PUBLIC SECTION.
+METHODS set_depth IMPORTING im_depth TYPE i.
+METHODS print REDEFINITION.
+PRIVATE SECTION.
+DATA depth TYPE i.
+
+ENDCLASS.
+*&---------------------------------------------------------------------*
+*& Class LAND_VEHICLE
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS land_vehicle DEFINITION INHERITING FROM vehicle.
+ PUBLIC SECTION.
+ METHODS set_wheels IMPORTING im_wheels TYPE i.
+ METHODS print REDEFINITION.
+ PRIVATE SECTION.
+ DATA wheels TYPE i.
+
+ENDCLASS.
+*&---------------------------------------------------------------------*
+*& Class (Implementation) WATER_VEHICLE
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS water_vehicle IMPLEMENTATION.
+  METHOD set_depth.
+  depth = im_depth.
+  ENDMETHOD.
+  METHOD print.
+    super->print( ).
+    WRITE: /'Floatation depth:', 35 depth.
+  ENDMETHOD.
+
+  ENDCLASS.
+*&---------------------------------------------------------------------*
+*& Class (Implementation) LAND_VEHICLE
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS land_vehicle IMPLEMENTATION.
+  METHOD set_wheels.
+    wheels = im_wheels.
+  ENDMETHOD.
+  METHOD print.
+    super->print( ).
+    WRITE: /'Number of wheels:', 35 wheels.
+  ENDMETHOD.
+
+ENDCLASS.

@@ -1,0 +1,33 @@
+*&---------------------------------------------------------------------*
+*& Report ZZ_1213_HELLOWORLD
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zz_1213_helloworld.
+
+WRITE 'Hello World'.
+NEW-LINE.
+WRITE 'Another Line'.
+WRITE sym_glasses AS SYMBOL .
+NEW-LINE.
+WRITE 'Version management exercise'.
+NEW-LINE.
+DATA time1 TYPE t.
+time1 = '123456'.
+WRITE time1.
+WRITE (8) time1.
+NEW-LINE.
+WRITE sy-datum DDMMYY.
+WRITE sy-datum DD/MM/YYYY.
+NEW-LINE.
+WRITE sy-timlo.
+GET TIME.
+TYPES zipcode(5) TYPE n.
+DATA myzip TYPE zipcode.
+myzip = '45141'.
+NEW-LINE.
+WRITE myzip.
+NEW-LINE.
+WRITE 'ABC' :
+INVERSE,
+HOTSPOT.

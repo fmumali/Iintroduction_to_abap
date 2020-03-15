@@ -1,0 +1,58 @@
+*&---------------------------------------------------------------------*
+*& Module Pool      ZZ_1213_BMAINT
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE ZZ_1213_BMAINT_TOP                      .    " Global Data
+
+* INCLUDE ZZ_1213_BMAINT_O01                      .  " PBO-Modules
+* INCLUDE ZZ_1213_BMAINT_I01                      .  " PAI-Modules
+* INCLUDE ZZ_1213_BMAINT_F01                      .  " FORM-Routines
+
+
+INCLUDE zz_1213_bmaint_status_0300o01.
+
+INCLUDE zz_1213_bmaint_user_commandi01.
+
+INCLUDE zz_1213_bmaint_status_0301o01.
+
+INCLUDE zz_1213_bmaint_user_commandi02.
+
+INCLUDE zz_1213_bmaint_status_0302o01.
+
+INCLUDE zz_1213_bmaint_user_commandi03.
+
+INCLUDE zz_1213_bmaint_exit_screeni01.
+
+INCLUDE zz_1213_bmaint_status_0304o01.
+
+INCLUDE zz_1213_bmaint_user_commandi04.
+
+INCLUDE zz_1213_bmaint_status_0305o01.
+
+INCLUDE zz_1213_bmaint_user_commandi05.
+
+INCLUDE zz_1213_bmaint_status_0400o01.
+
+INCLUDE zz_1213_bmaint_user_commandi06.
+
+INCLUDE zz_1213_bmaint_status_0401o01.
+
+INCLUDE zz_1213_bmaint_user_commandi07.
+
+INCLUDE zz_1213_bmaint_status_0402o01.
+
+INCLUDE zz_1213_bmaint_user_commandi08.
+
+INCLUDE zz_1213_bmaint_status_0404o01.
+
+INCLUDE zz_1213_bmaint_user_commandi09.
+
+INCLUDE zz_1213_bmaint_status_0405o01.
+
+INCLUDE zz_1213_bmaint_user_commandi10.
+
+INCLUDE zz_1213_bmaint_status_0200o01.
+
+INCLUDE zz_1213_bmaint_user_commandi11.

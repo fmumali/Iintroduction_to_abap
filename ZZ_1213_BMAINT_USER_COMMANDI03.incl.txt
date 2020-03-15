@@ -1,0 +1,33 @@
+*----------------------------------------------------------------------*
+***INCLUDE ZZ_1213_BMAINT_USER_COMMANDI03.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0302  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0302 INPUT.
+
+CASE ok_code.
+
+WHEN 'SAVE'.
+
+    INSERT INTO  ZZ1213_BROCH VALUES  ZZ1213_BROCH.
+     IF sy-subrc = 0.
+            MESSAGE 'Brochure successfully selected' TYPE 'S'.
+          ELSEIF sy-subrc = 4.
+            MESSAGE 'Inccorect entries! Please try again' TYPE 'E'.
+          ENDIF.
+LEAVE TO SCREEN 200.
+
+WHEN 'BACK'.
+
+LEAVE TO SCREEN 200.
+
+WHEN 'EXIT'.
+
+LEAVE PROGRAM.
+ENDCASE.
+
+
+ENDMODULE.

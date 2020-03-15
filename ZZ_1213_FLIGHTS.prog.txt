@@ -1,0 +1,128 @@
+*&---------------------------------------------------------------------*
+*& Report ZZ_1213_FLIGHTS
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZZ_1213_FLIGHTS MESSAGE-ID ZZ_1213_MESSAGES.
+
+TABLES SSCRFIELDS.
+
+SELECTION-SCREEN COMMENT 1(30) scrntext.
+SELECTION-SCREEN ULINE /1(60).
+INITIALIZATION.
+    scrntext = 'Welcome to the Test Program'.
+
+SELECTION-SCREEN BEGIN OF LINE.
+    SELECTION-SCREEN COMMENT 1(15) param.
+    PARAMETERS pa_carr TYPE S_CARR_ID.
+    SELECTION-SCREEN COMMENT 25(30) instr.
+SELECTION-SCREEN END OF LINE.
+INITIALIZATION.
+    param  = 'Airline ID'.
+    instr = 'Please select a valid ID'.
+
+DATA wa TYPE spfli.
+
+DATA itab TYPE TABLE OF spfli.
+
+SELECTION-SCREEN SKIP 2.
+SELECTION-SCREEN PUSHBUTTON 30(14) descr USER-COMMAND clearid.
+INITIALIZATION.
+descr = 'Clear Input'.
+
+AT SELECTION-SCREEN.
+  IF sscrfields-ucomm = 'CLEARID'.
+    pa_carr = ' '.
+    ELSE.
+      MODIFY SCREEN.
+      ENDIF.
+
+START-OF-SELECTION.
+
+CALL FUNCTION 'Z_1213_GET_FLIGHTS'
+  EXPORTING
+    IM_CARRID  = pa_carr
+ IMPORTING
+   EX_LIST   = itab
+EXCEPTIONS
+SQL_ERROR = 5
+NO_AUTH = 7
+  .
+
+ "SELECT *
+  "FROM spfli INTO wa.
+  "WRITE: / wa-carrid, wa-connid, wa-countryfr, wa-cityfrom, wa-countryto, wa-cityto.
+  "ENDSELECT.
+" FROM spfli INTO CORRESPONDING FIELDS OF TABLE itab
+ "WHERE carrid = pa_carr.
+
+
+FORMAT COLOR 4.
+ULINE /(75).
+WRITE: /'| CONNECTION ', 15'| FROM ', 35 '| TO ', 75 '|'.
+FORMAT RESET.
+
+IF
+sy-subrc = 0.
+
+LOOP AT itab INTO wa.
+ULINE /(75).
+WRITE: /'|', wa-carrid, wa-connid, 15
+        '|', wa-countryfr, wa-cityfrom, 35
+        '|', wa-countryto, wa-cityto, 75 '|'.
+
+HIDE wa.
+ENDLOOP.
+ULINE /(75).
+
+ MESSAGE s000 with pa_carr.
+  IF sy-subrc = 0.
+  MESSAGE s003 WITH wa-carrid.
+  ELSE.
+  MESSAGE e002.
+  ENDIF.
+
+ELSEIF
+sy-subrc = 7.
+ "WRITE: / 'UNAUTHORIZED TRANSACTION'.
+MESSAGE s002.
+ELSE.
+ "WRITE: / 'INVALID ENTRY'.
+MESSAGE s001.
+ENDIF.
+AT LINE-SELECTION.
+
+IF sy-lsind = 1.
+ sy-lilli = 5.
+
+FORMAT COLOR 7.
+ULINE /(60).
+WRITE: / '| FLIGHTS FOR THE CONNECTION ',  wa-carrid, wa-connid, 60 '|'.
+FORMAT RESET.
+ULINE /(60).
+
+FORMAT COLOR 4.
+WRITE: / '| DATE ', 15 '| PLANE ', 30 '| SEATS ', 45 '| OCCUPATION ', 60 '|'.
+FORMAT RESET.
+ULINE /(60).
+
+ENDIF.
+
+DATA wa_sflight TYPE SFLIGHT.
+
+SELECT * FROM sflight INTO wa_sflight
+WHERE carrid = wa-carrid AND connid = wa-connid.
+
+WRITE: /'|', wa_sflight-fldate, 15
+        '|', wa_sflight-planetype, 30
+        '|', wa_sflight-seatsmax, 45
+        '|', wa_sflight-seatsocc, 60 '|'.
+ULINE /(60).
+
+ MESSAGE s000 with pa_carr.
+IF sy-subrc = 0.
+MESSAGE s003 WITH wa-connid.
+ELSE.
+MESSAGE e002.
+ENDIF.
+  ENDSELECT.

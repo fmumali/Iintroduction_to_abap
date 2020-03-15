@@ -1,0 +1,82 @@
+*&---------------------------------------------------------------------*
+*& Report ZZ_1213_CARS
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZZ_1213_CARS.
+
+TYPES: BEGIN OF str_car,
+manufacturer(20) TYPE c,
+drive(25) TYPE c,
+transmission(15) Type c,
+model(20) TYPE c,
+power TYPE i,
+year(4) TYPE n,
+serial(10) TYPE n,
+passengers TYPE i,
+END OF str_car.
+DATA mycar TYPE str_car.
+mycar-manufacturer = 'Toyota'.
+mycar-drive = 'Front Wheel Drive'.
+mycar-transmission = 'Automatic'.
+mycar-model = 'Corolla'.
+mycar-power = '170'.
+mycar-year = '2018'.
+mycar-serial = '2200'.
+mycar-passengers = '5'.
+WRITE: / 'Manufacturer:', mycar-manufacturer.
+WRITE: / 'Drive Type:', mycar-drive.
+WRITE: / 'Transmission system:', mycar-transmission.
+WRITE: / 'Model:', mycar-model.
+WRITE: / 'Power:', mycar-power.
+WRITE: / 'Year of construction:', mycar-year.
+WRITE: / 'Serial number:', mycar-serial.
+WRITE: / 'Passengers:', mycar-passengers.
+
+DATA itab_cars TYPE STANDARD TABLE OF str_car WITH KEY serial.
+
+mycar-manufacturer = 'BMW'.
+mycar-drive = 'Four Wheel Drive'.
+mycar-transmission = 'Automatic'.
+mycar-model = 'X5'.
+mycar-power = '355'.
+mycar-year = '2019'.
+mycar-serial = '3300'.
+mycar-passengers = '5'.
+
+INSERT mycar INTO TABLE itab_cars.
+mycar-manufacturer = 'Volkswagen'.
+mycar-drive = 'Rear Wheel Drive'.
+mycar-transmission = 'Semi Automatic'.
+mycar-model = 'Golf'.
+mycar-power = '300'.
+mycar-year = '2015'.
+mycar-serial = '4400'.
+mycar-passengers = '5'.
+INSERT mycar INTO TABLE itab_cars.
+
+mycar-manufacturer = 'Honda'.
+mycar-drive = 'Rear Wheel Drive'.
+mycar-transmission = 'Automatic'.
+mycar-model = 'CR-V'.
+mycar-power = '325'.
+mycar-year = '2016'.
+mycar-serial = '5500'.
+mycar-passengers = '5'.
+INSERT mycar INTO TABLE itab_cars.
+
+DELETE TABLE itab_cars WITH TABLE KEY serial = '5500'.
+
+LOOP AT itab_cars INTO mycar.
+WRITE: /.
+WRITE: / 'sy-tabix:'.
+WRITE: / 'Manufacturer:', mycar-manufacturer.
+WRITE: / 'Drive Type:', mycar-drive.
+WRITE: / 'Transmission system:', mycar-transmission.
+WRITE: / 'Model:', mycar-model.
+WRITE: / 'Power:', mycar-power.
+WRITE: / 'Year of construction:', mycar-year.
+WRITE: / 'Serial number:', mycar-serial.
+WRITE: / 'Passengers:', mycar-passengers.
+
+ENDLOOP.

@@ -1,0 +1,47 @@
+*----------------------------------------------------------------------*
+***INCLUDE ZZ_1213_BMAINT_USER_COMMANDI04.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0304  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0304 INPUT.
+
+CASE ok_code.
+WHEN 'EDIT'.
+
+SELECT SINGLE  * FROM ZZ1213_BROCH INTO wa_broch WHERE BROCHID = ZZ1213_BROCH-BROCHID.
+
+  IF sy-subrc = 0.
+            MESSAGE 'Brochure successfully selected' TYPE 'S'.
+          ELSE.
+            MESSAGE 'Brochure not found! Please enter valid brochure number' TYPE 'E'.
+          ENDIF.
+
+LEAVE TO SCREEN 305.
+
+WHEN 'DEL'.
+
+DELETE FROM ZZ1213_BROCH WHERE BROCHID =  ZZ1213_BROCH-BROCHID.
+
+  IF sy-subrc = 0.
+            MESSAGE 'Brochure deleted' TYPE 'S'.
+          ELSE.
+            MESSAGE 'Brochure not deleted! Please enter a valid brochure number' TYPE 'E'.
+          ENDIF.
+  LEAVE TO SCREEN 200.
+
+WHEN 'BACK'.
+
+LEAVE TO SCREEN 200.
+
+WHEN 'EXIT'.
+
+LEAVE PROGRAM.
+
+ENDCASE.
+
+CLEAR ok_code.
+
+ENDMODULE.

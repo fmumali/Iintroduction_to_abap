@@ -1,0 +1,27 @@
+*&---------------------------------------------------------------------*
+*& Report ZZ_1213_STATISTIC
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZZ_1213_STATISTIC.
+
+TYPES: BEGIN OF stat_type,
+          CARRID LIKE SPFLI-CARRID,
+          CARRNAME LIKE SCARR-CARRNAME,
+          DURATION LIKE SPFLI-FLTIME,
+       END OF stat_type.
+
+DATA stat TYPE TABLE OF stat_type.
+
+SELECT SPFLI~CARRID CARRNAME MAX( FLTIME ) AS DURATION
+FROM SPFLI JOIN SCARR ON SPFLI~CARRID = SCARR~CARRID
+INTO CORRESPONDING FIELDS OF TABLE stat WHERE FLTYPE = ' '
+GROUP BY SPFLI~CARRID CARRNAME
+HAVING MAX( FLTIME ) > 420
+ORDER BY DURATION DESCENDING.
+
+DATA stats TYPE stat_type.
+
+LOOP AT stat  INTO stats.
+WRITE: / stats-carrid,  stats-carrname,  stats-duration.
+ENDLOOP.

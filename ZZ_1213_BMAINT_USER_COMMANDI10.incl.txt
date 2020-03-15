@@ -1,0 +1,28 @@
+*----------------------------------------------------------------------*
+***INCLUDE ZZ_1213_BMAINT_USER_COMMANDI10.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0405  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0405 INPUT.
+
+CASE ok_code.
+
+WHEN 'SAVE'.
+
+    IF ZZ1213_OFFER <> wa_offer.
+       MODIFY  ZZ1213_OFFER FROM  ZZ1213_OFFER.
+    ENDIF.
+LEAVE TO SCREEN 200.
+
+WHEN 'BACK'.
+LEAVE TO SCREEN 400.
+
+WHEN 'EXIT'.
+LEAVE PROGRAM.
+
+ENDCASE.
+
+ENDMODULE.

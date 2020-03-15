@@ -1,0 +1,28 @@
+*&---------------------------------------------------------------------*
+*& Report ZZ_1213_HEADERLINE
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZZ_1213_HEADERLINE.
+TYPES:
+  BEGIN OF str_line,
+     example TYPE i,
+     example2 TYPE i,
+  END OF str_line.
+
+DATA: tab_modern TYPE STANDARD TABLE OF str_line,
+        wa_modern TYPE str_line,
+        tab_old TYPE STANDARD TABLE OF str_line WITH HEADER LINE.
+
+tab_old-example = 1.
+tab_old-example2 = 1.
+APPEND tab_old.
+
+
+tab_old-example = 2.
+tab_old-example2 = 2.
+APPEND tab_old.
+
+wa_modern-example = 2.
+wa_modern-example2 = 2.
+APPEND wa_modern TO tab_modern.

@@ -1,0 +1,100 @@
+*&---------------------------------------------------------------------*
+*& Report ZZ_1213_CUST
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZZ_1213_CUST MESSAGE-ID ZZ_1213_CMESSAGES.
+
+TABLES SSCRFIELDS.
+
+DATA switch TYPE n.
+
+DATA wa TYPE SCUSTOM.
+
+
+SELECTION-SCREEN BEGIN OF SCREEN 800 AS SUBSCREEN.
+  SELECT-OPTIONS s_name FOR wa-name.
+SELECTION-SCREEN SKIP 1.
+      SELECT-OPTIONS s_street FOR wa-street MODIF ID abc.
+SELECTION-SCREEN SKIP 1.
+    SELECTION-SCREEN BEGIN OF LINE.
+        SELECTION-SCREEN COMMENT 1(20)  comment1.
+        SELECTION-SCREEN POSITION POS_LOW.
+        SELECT-OPTIONS: s_postco FOR wa-postcode NO INTERVALS NO-EXTENSION MODIF ID abc,
+                      s_city  FOR wa-city NO INTERVALS NO-EXTENSION MODIF ID abc.
+    SELECTION-SCREEN END OF LINE.
+SELECTION-SCREEN PUSHBUTTON 5(10) mybtn USER-COMMAND change.
+SELECTION-SCREEN END OF SCREEN 800.
+
+
+  SELECTION-SCREEN BEGIN OF SCREEN 900 AS SUBSCREEN.
+    SELECT-OPTIONS s_disc FOR wa-discount.
+    PARAMETERS pa_bus RADIOBUTTON GROUP rb1 DEFAULT 'X'.
+    PARAMETERS pa_priv RADIOBUTTON GROUP rb1.
+  SELECTION-SCREEN END OF SCREEN 900.
+
+
+SELECTION-SCREEN BEGIN OF TABBED BLOCK block1 FOR 8 LINES.
+    SELECTION-SCREEN TAB (20) tab1 USER-COMMAND addr DEFAULT SCREEN 800.
+    SELECTION-SCREEN TAB (20) tab2 USER-COMMAND busi DEFAULT SCREEN 900.
+SELECTION-SCREEN END OF BLOCK block1.
+
+
+INITIALIZATION.
+comment1 = 'Postal Code/City'.
+tab1 = 'Address'.
+tab2 = 'Business Data'.
+
+AT SELECTION-SCREEN.
+IF sscrfields-ucomm = 'CHANGE' AND SY-DYNNR = 800.
+IF switch = '1'.
+switch = '0'.
+ELSE.
+switch = '1'.
+ENDIF.
+ENDIF.
+
+
+AT SELECTION-SCREEN ON s_city.
+IF
+s_city CA '0123456789'.
+MESSAGE e000.
+
+ENDIF.
+
+AT SELECTION-SCREEN OUTPUT.
+LOOP AT SCREEN.
+IF SCREEN-GROUP1 = 'ABC'.
+SCREEN-ACTIVE = switch.
+MODIFY SCREEN.
+ENDIF.
+ENDLOOP.
+IF switch = '1'.
+mybtn = 'Hide'.
+ELSE.
+mybtn = 'Show'.
+ENDIF.
+
+
+
+START-OF-SELECTION.
+DATA radb TYPE c.
+      IF pa_bus = 'X'.
+             radb = 'B'.
+      ELSE.
+      radb = 'P'.
+      ENDIF.
+FORMAT COLOR 1.
+WRITE: / 'Name', 30 'Street', 60 'City', 80 'Disc.', 85 'Type'.
+FORMAT COLOR 2.
+
+SELECT * FROM SCUSTOM INTO wa
+WHERE name IN s_name
+AND street IN s_street
+AND postcode IN s_postco
+AND city IN s_city
+AND discount IN s_disc
+AND custtype = radb.
+
+WRITE: / wa-name, wa-street, wa-city, wa-discount, wa-custtype.
+ENDSELECT.

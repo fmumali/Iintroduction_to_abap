@@ -1,0 +1,44 @@
+FUNCTION Z_1213_SOFFER.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(CARRID1) TYPE  SPFLI-CARRID
+*"     REFERENCE(CONNID1) TYPE  SPFLI-CONNID
+*"     REFERENCE(CARRID2) TYPE  SPFLI-CARRID
+*"     REFERENCE(CONNID2) TYPE  SPFLI-CONNID
+*"  EXPORTING
+*"     REFERENCE(AVAILABLE) TYPE  INT4
+*"----------------------------------------------------------------------
+
+DATA WA TYPE SFLIGHT.
+DATA WA2 TYPE SFLIGHT.
+DATA OUTBOUND TYPE TABLE OF SFLIGHT.
+DATA INBOUND  TYPE TABLE OF SFLIGHT.
+
+ SELECT  *
+   FROM SFLIGHT
+   INTO TABLE OUTBOUND
+   WHERE CARRID = CARRID1 AND CONNID = CONNID1.
+
+    LOOP AT OUTBOUND INTO WA.
+      IF  WA-SEATSMAX + WA-SEATSMAX_B + WA-SEATSMAX_F - WA-SEATSOCC - WA-SEATSOCC_B - WA-SEATSOCC_F > 0.
+
+        SELECT  *
+          FROM SFLIGHT
+          INTO TABLE INBOUND
+          WHERE CARRID = CARRID2 AND CONNID = CONNID2.
+
+            LOOP AT INBOUND  INTO WA2.
+              IF  WA2-SEATSMAX + WA2-SEATSMAX_B + WA2-SEATSMAX_F - WA2-SEATSOCC - WA2-SEATSOCC_B - WA2-SEATSOCC_F > 0.
+                AVAILABLE = 1.
+                ELSE.
+                EXIT.
+               ENDIF.
+             ENDLOOP.
+                  IF AVAILABLE = 1.
+                  EXIT.
+                  ENDIF.
+       ENDIF.
+      ENDLOOP.
+
+ENDFUNCTION.

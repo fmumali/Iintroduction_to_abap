@@ -1,0 +1,37 @@
+*----------------------------------------------------------------------*
+***INCLUDE ZZ_1213_BMAINT_USER_COMMANDI06.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0400  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0400 INPUT.
+
+CASE ok_code.
+
+WHEN 'SELECT'.
+
+SELECT SINGLE * FROM ZZ1213_OFFER INTO wa_offer WHERE OFFERID = ZZ1213_OFFER-OFFERID.
+
+  IF sy-subrc = 0.
+            MESSAGE 'Offer selected' TYPE 'S'.
+          ELSE.
+            MESSAGE 'Offer not found! Please enter valid offer number' TYPE 'E'.
+          ENDIF.
+
+SET SCREEN 401.
+
+WHEN 'BACK'.
+
+CALL SCREEN 200.
+
+WHEN 'EXIT'.
+
+LEAVE PROGRAM.
+
+ENDCASE.
+
+CLEAR ok_code.
+
+ENDMODULE.

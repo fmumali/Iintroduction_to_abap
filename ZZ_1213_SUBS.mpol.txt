@@ -1,0 +1,16 @@
+*&---------------------------------------------------------------------*
+*& Module Pool      ZZ_1213_SUBS
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE ZZ_1213_SUBS_TOP                        .    " Global Data
+
+* INCLUDE ZZ_1213_SUBS_O01                        .  " PBO-Modules
+* INCLUDE ZZ_1213_SUBS_I01                        .  " PAI-Modules
+* INCLUDE ZZ_1213_SUBS_F01                        .  " FORM-Routines
+
+
+INCLUDE zz_1213_subs_user_command_0i01.
+
+INCLUDE zz_1213_subs_status_0100o01.

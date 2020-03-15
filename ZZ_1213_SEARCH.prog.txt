@@ -1,0 +1,161 @@
+*&---------------------------------------------------------------------*
+*& Report ZZ_1213_SEARCH
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZZ_1213_SEARCH MESSAGE-ID ZZ_1213_CMESSAGES.
+
+TABLES SSCRFIELDS.
+DATA: spfli TYPE SPFLI,
+sflight TYPE SFLIGHT,
+saplane TYPE SAPLANE,
+scarr TYPE SCARR.
+
+SELECTION-SCREEN BEGIN OF SCREEN 4000  AS WINDOW.
+
+      SELECTION-SCREEN ULINE /1(30).
+      SELECTION-SCREEN COMMENT 35(15) titleo.
+SELECTION-SCREEN ULINE 54(30).
+
+  SELECTION-SCREEN SKIP 1.
+
+    SELECTION-SCREEN COMMENT 1(50) progtext.
+    SELECTION-SCREEN ULINE /1(83).
+
+SELECT-OPTIONS fldate FOR  sflight-fldate.
+SELECTION-SCREEN SKIP 1.
+SELECTION-SCREEN COMMENT 1(50) comment1.
+SELECTION-SCREEN SKIP 1.
+SELECT-OPTIONS cntryfr FOR spfli-countryfr  NO INTERVALS.
+SELECT-OPTIONS ctyfrom FOR spfli-cityfrom  NO INTERVALS.
+SELECTION-SCREEN SKIP 1.
+SELECTION-SCREEN COMMENT 1(50) comment2.
+SELECT-OPTIONS cntryto FOR spfli-countryto NO INTERVALS.
+SELECT-OPTIONS ctyto FOR  spfli-cityto  NO INTERVALS.
+SELECTION-SCREEN SKIP 1.
+PARAMETERS pa_class TYPE S_CLASS.
+SELECT-OPTIONS fare FOR sflight-price.
+SELECTION-SCREEN SKIP 2.
+SELECTION-SCREEN PUSHBUTTON 30(14) delet USER-COMMAND dltinpt.
+SELECTION-SCREEN END OF SCREEN 4000.
+
+INITIALIZATION.
+titleo = 'BEACH CHAIR LLC'.
+progtext = 'Welcome to the search flight program'.
+comment1 = 'Where should the flight depart?'.
+comment2 = 'Which destination should the flight have?'.
+delet = 'Delete Input'.
+
+
+
+TYPES: BEGIN OF ZZ_1213_SVIEW,
+     carrid LIKE spfli-carrid,
+     connid LIKE spfli-connid,
+     cityfrom LIKE spfli-cityfrom,
+     countryfr LIKE spfli-countryfr,
+     countryto LIKE spfli-countryto,
+     cityto LIKE spfli-cityto,
+     fldate LIKE sflight-fldate,
+     price LIKE sflight-price,
+     currency LIKE sflight-currency,
+     seatsmax LIKE saplane-seatsmax,
+     seatsocc LIKE sflight-seatsocc,
+     seatsmax_b  LIKE saplane-seatsmax_b,
+     seatsocc_b LIKE sflight-seatsocc_b,
+     seatsmax_f  LIKE saplane-seatsmax_f,
+     seatsocc_f LIKE sflight-seatsocc_f,
+     carrname LIKE scarr-carrname,
+flights TYPE ZZ_1213_SVIEW,
+END OF ZZ_1213_SVIEW.
+
+DATA itab  TYPE TABLE OF ZZ_1213_SVIEW.
+
+CALL SELECTION-SCREEN '4000'.
+
+
+AT SELECTION-SCREEN.
+  IF sscrfields-ucomm = 'DLTINPT'.
+    pa_class  = ' '.
+    CLEAR fldate[].
+    CLEAR cntryfr[].
+    CLEAR ctyfrom[].
+    CLEAR cntryto[].
+    CLEAR ctyto[].
+    CLEAR fare[].
+    ELSE.
+      MODIFY SCREEN.
+      ENDIF.
+
+
+START-OF-SELECTION.
+
+DATA freeseats TYPE i.
+DATA totalseats TYPE i.
+
+
+SELECT *
+ FROM ZZ_1213_SVIEW
+INTO CORRESPONDING FIELDS OF TABLE itab
+WHERE CURRENCY = 'EUR'
+ AND COUNTRYFR IN CNTRYFR
+ AND CITYFROM IN CTYFROM
+ AND COUNTRYTO IN CNTRYTO
+ AND PRICE IN FARE.
+
+IF sy-dbcnt = 0.
+MESSAGE e001.
+ENDIF.
+
+DATA class(20) TYPE c.
+  IF pa_class = 'Y'.
+   class = 'Economy Class)'.
+  ELSEIF
+  pa_class = 'C'.
+  class = 'Business Class)'.
+  ELSEIF
+  pa_class = 'F'.
+  class = 'First Class)'.
+  ELSEIF
+  pa_class = ' '.
+  class = 'All Classes)'.
+ENDIF.
+
+   FORMAT COLOR 2.
+   WRITE:/ 'Found',8 sy-dbcnt, 'matches.',30 'These flights match your search criteria:', 62 '(Free seats in',class.
+   FORMAT RESET.
+   ULINE /(96).
+   FORMAT COLOR 4.
+   WRITE: / '| FROM ', 15 '| TO ', 30 '| DATE ', 45 '| FREE SEATS', 60 '|TOTAL SEATS', 75 '| AIRLINE', 96 '|'.
+   FORMAT RESET.
+   ULINE /(96).
+
+DATA wa TYPE ZZ_1213_SVIEW.
+LOOP AT itab INTO wa.
+
+ IF pa_class = 'Y'.
+        freeseats = wa-seatsmax - wa-seatsocc.
+        totalseats  = wa-seatsmax.
+        ELSEIF
+        pa_class = 'C'.
+        freeseats = wa-seatsmax_b - wa-seatsocc_b.
+        totalseats = wa-seatsmax_b.
+        ELSEIF
+        pa_class = 'F'.
+        freeseats =  wa-seatsmax_f - wa-seatsocc_f.
+        totalseats = wa-seatsmax_f.
+        ELSEIF
+        pa_class = ' '.
+        freeseats = ( wa-seatsmax + wa-seatsmax_b + wa-seatsmax_f ) -
+                     ( wa-seatsocc + wa-seatsocc_b + wa-seatsocc_f ).
+        totalseats =  wa-seatsmax + wa-seatsmax_b + wa-seatsmax_f.
+   ENDIF.
+
+  WRITE: / '|',  wa-cityfrom, 15
+           '|',  wa-cityto, 30
+           '|',  wa-fldate, 45
+           '|',  freeseats, 60
+           '|',  totalseats, 75
+           '|',  wa-carrname, 96 '|'.
+ULINE /(96).
+
+ENDLOOP.

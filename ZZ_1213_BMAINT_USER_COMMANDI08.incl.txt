@@ -1,0 +1,36 @@
+*----------------------------------------------------------------------*
+***INCLUDE ZZ_1213_BMAINT_USER_COMMANDI08.
+*----------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0402  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0402 INPUT.
+
+CASE ok_code.
+
+  WHEN 'SAVE'.
+  WHEN 'CREATE'.
+
+    INSERT INTO  ZZ1213_OFFER VALUES  ZZ1213_OFFER.
+     IF sy-subrc = 0.
+            MESSAGE 'Offer successfully saved' TYPE 'S'.
+          ELSEIF sy-subrc = 4.
+            MESSAGE 'Inccorect entries! Please try again' TYPE 'E'.
+          ENDIF.
+
+ LEAVE TO SCREEN 200.
+
+  WHEN 'BACK'.
+
+  LEAVE TO SCREEN 200.
+
+  WHEN 'EXIT'.
+
+  LEAVE PROGRAM.
+  ENDCASE.
+
+
+
+ENDMODULE.
